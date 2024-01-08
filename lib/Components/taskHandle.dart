@@ -8,32 +8,40 @@ class TaskHandler extends StatefulWidget {
   State<TaskHandler> createState() => _TaskHandlerState();
 }
 
-class _TaskHandlerState extends State<TaskHandler> {
+class _TaskHandlerState extends State<TaskHandler> with TickerProviderStateMixin{
+
+  late final TabController _tabController;
+
+  @override
+  void initState() {
+    super.initState();
+    _tabController = TabController(length: 3,vsync: this);
+  }
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: ContainedTabBarView(
-        initialIndex: 0,
-        tabBarProperties: const TabBarProperties(
-          indicatorColor: Colors.purple,
-          indicatorWeight: 3.5,
-          indicatorSize: TabBarIndicatorSize.label,
+      appBar: AppBar(
+        bottom: TabBar(
+          controller: _tabController,
+          overlayColor: MaterialStateProperty.all<Color>(Colors.transparent),
+          tabs: const <Widget>[
+            Tab(
+              text: 'Task',
+            ),
+            Tab(
+              text: 'Completed',
+            ),
+          ],
         ),
-        tabs: const [
-          Text('Task',
-            style: TextStyle(
-              fontSize: 18),
-          ),
-          Text('Completed',
-              style: TextStyle(
-              fontSize: 18),
-          ),
-        ],
-        views: [
+      ),
+      body: TabBarView(
+        controller: _tabController,
+        children: <Widget>[
           _buildTasksList(),
           _buildCompletedTasksList()
         ],
-        // onChange: (index) => print(index),
       ),
     );
   }
