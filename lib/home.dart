@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
-import 'package:taskm/AllTasks.dart';
-import 'package:taskm/calendar.dart';
-import 'package:taskm/taskHandle.dart';
+import 'package:taskm/Components/AllTasks.dart';
+import 'package:taskm/Components/calendar.dart';
+import 'package:taskm/Components/taskHandle.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -66,7 +66,7 @@ class _HomePageState extends State<HomePage> {
           ),
         ],
       ),
-      floatingActionButton: tapIndex == 2 ? null
+      floatingActionButton: tapIndex > 0 ? null
           : FloatingActionButton(
         onPressed: () {
         },
