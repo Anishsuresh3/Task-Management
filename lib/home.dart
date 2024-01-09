@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:taskm/Components/AllTasks.dart';
+import 'package:taskm/Components/TaskView.dart';
 import 'package:taskm/Components/calendar.dart';
 import 'package:taskm/Components/taskHandle.dart';
 
@@ -69,6 +70,10 @@ class _HomePageState extends State<HomePage> {
       floatingActionButton: tapIndex > 0 ? null
           : FloatingActionButton(
         onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const NewTask()),
+          );
         },
         child: const Icon(Iconsax.add),
       ),

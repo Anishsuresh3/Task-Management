@@ -26,7 +26,7 @@ class TaskController{
   }
 
   List<Task> getTasks() {
-    return _taskBox?.values.toList() ?? [];
+    return _taskBox?.values.where((task) => task.isCompleted!=true).toList() ?? [];
   }
 
   Task? getParticularTask(dynamic key){

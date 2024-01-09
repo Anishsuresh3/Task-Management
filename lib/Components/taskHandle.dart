@@ -1,5 +1,10 @@
 import 'package:contained_tab_bar_view/contained_tab_bar_view.dart';
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
+import 'package:taskm/widgets/completedTaskTile.dart';
+import 'package:taskm/widgets/taskTile.dart';
+
+import '../Models/task.dart';
 
 class TaskHandler extends StatefulWidget {
   const TaskHandler({Key? key}) : super(key: key);
@@ -15,9 +20,13 @@ class _TaskHandlerState extends State<TaskHandler> with TickerProviderStateMixin
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: 3,vsync: this);
+    // initialize();
+    _tabController = TabController(length: 2,vsync: this);
   }
 
+  void initialize() async {
+    await Hive.openBox<Task>('tasksBox');
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -46,24 +55,10 @@ class _TaskHandlerState extends State<TaskHandler> with TickerProviderStateMixin
     );
   }
   Widget _buildTasksList() {
-    return ListView.builder(
-      itemCount: 20,
-      itemBuilder: (context, index) {
-        return ListTile(
-          title: Text('Task $index'),
-        );
-      },
-    );
+    return TaskTile();
   }
 
   Widget _buildCompletedTasksList() {
-    return ListView.builder(
-      itemCount: 5,
-      itemBuilder: (context, index) {
-        return ListTile(
-          title: Text('Completed Task $index'),
-        );
-      },
-    );
+    return CompletedTaskTile();
   }
 }
