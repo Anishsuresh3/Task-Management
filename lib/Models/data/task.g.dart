@@ -8,7 +8,7 @@ part of 'task.dart';
 
 class TaskAdapter extends TypeAdapter<Task> {
   @override
-  final int typeId = 0;
+  final int typeId = 1;
 
   @override
   Task read(BinaryReader reader) {
@@ -18,12 +18,12 @@ class TaskAdapter extends TypeAdapter<Task> {
     };
     return Task(
       title: fields[0] as String,
-      description: fields[1] as String,
+      description: fields[1] as String?,
       isCompleted: fields[2] as bool,
       deadline: fields[3] as DateTime,
       priority: fields[4] as int,
-      tags: (fields[5] as List).cast<String>(),
-      filePath: (fields[6] as List).cast<String?>(),
+      tags: (fields[5] as List?)?.cast<String>(),
+      filePath: (fields[6] as List?)?.cast<String?>(),
     );
   }
 

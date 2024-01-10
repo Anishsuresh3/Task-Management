@@ -1,21 +1,24 @@
 import 'package:dropdown_textfield/dropdown_textfield.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:simple_chips_input/select_chips_input.dart';
 import 'package:simple_chips_input/simple_chips_input.dart';
 import 'package:taskm/Models/task_controler.dart';
+import 'package:taskm/Models/tasks_provider.dart';
 import 'package:toast/toast.dart';
-import '../Models/task.dart';
+import '../Models/data/task.dart';
 import '../ScreenComponent/ScreenSize.dart';
-class NewTask extends StatefulWidget {
+
+class NewTask extends StatefulHookConsumerWidget {
   const NewTask({Key? key}) : super(key: key);
 
   @override
-  State<NewTask> createState() => _NewTaskState();
+  ConsumerState<NewTask> createState() => _NewTaskState();
 }
 
-class _NewTaskState extends State<NewTask>{
+class _NewTaskState extends ConsumerState<NewTask>{
 
   final TextEditingController _controllerTitle = TextEditingController();
   final TextEditingController _controllerDesc = TextEditingController();
@@ -71,10 +74,7 @@ class _NewTaskState extends State<NewTask>{
   Widget build(BuildContext context) {
     SizeConfig().init(context);
     ToastContext().init(context);
-    return Consumer(
-      builder: (context, watch, child) {
-        final taskController = watch.watch(taskControllerProvider);
-        return Scaffold(
+    return Scaffold(
           appBar: AppBar(
             title: const Text("New Task",
               style: TextStyle(
@@ -334,7 +334,7 @@ class _NewTaskState extends State<NewTask>{
                             tags: tags,
                             filePath: []
                         );
-                        taskController.addTask(task);
+                        ref.read(hiveData.notifier).addTask(task);
                         Navigator.pop(context);
                       }
                       else{
@@ -361,8 +361,6 @@ class _NewTaskState extends State<NewTask>{
             ),
           ),
         );
-      },
-    );
   }
 
   bool validateInput(){

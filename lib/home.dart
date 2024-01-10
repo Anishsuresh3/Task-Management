@@ -69,8 +69,8 @@ class _HomePageState extends State<HomePage> {
       ),
       floatingActionButton: tapIndex > 0 ? null
           : FloatingActionButton(
-        onPressed: () {
-          Navigator.push(
+        onPressed: () async {
+          await Navigator.push(
             context,
             MaterialPageRoute(builder: (context) => const NewTask()),
           );

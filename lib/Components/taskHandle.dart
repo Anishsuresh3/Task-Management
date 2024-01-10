@@ -4,7 +4,7 @@ import 'package:hive/hive.dart';
 import 'package:taskm/widgets/completedTaskTile.dart';
 import 'package:taskm/widgets/taskTile.dart';
 
-import '../Models/task.dart';
+import '../Models/data/task.dart';
 
 class TaskHandler extends StatefulWidget {
   const TaskHandler({Key? key}) : super(key: key);
@@ -20,12 +20,7 @@ class _TaskHandlerState extends State<TaskHandler> with TickerProviderStateMixin
   @override
   void initState() {
     super.initState();
-    // initialize();
     _tabController = TabController(length: 2,vsync: this);
-  }
-
-  void initialize() async {
-    await Hive.openBox<Task>('tasksBox');
   }
 
   @override

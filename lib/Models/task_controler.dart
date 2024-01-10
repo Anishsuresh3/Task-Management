@@ -1,6 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hive/hive.dart';
-import 'task.dart';
+import 'data/task.dart';
 import 'hive_provider.dart';
 
 final taskControllerProvider = Provider<TaskController>((ref) {
@@ -13,19 +13,22 @@ class TaskController{
 
   TaskController(this._taskBox);
 
-  Future<void> addTask(Task task) async {
-    await _taskBox?.add(task);
+  List<Task?> addTask(Task task)  {
+    _taskBox?.add(task);
+    return _taskBox?.values.where((task) => task.isCompleted!=true).toList() ?? [];
   }
 
-  Future<void> updateTask(Task task) async {
-    await task.save();
+  List<Task?> updateTask(dynamic key,Task value)  {
+    _taskBox?.put(key, value);
+    return _taskBox?.values.toList() ?? [];
   }
 
-  Future<void> deleteTask(Task task) async {
-    await task.delete();
+  List<Task?> deleteTask(dynamic key) {
+    _taskBox?.delete(key);
+    return _taskBox?.values.toList() ?? [];
   }
 
-  List<Task> getTasks() {
+  List<Task?> getTasks() {
     return _taskBox?.values.where((task) => task.isCompleted!=true).toList() ?? [];
   }
 
@@ -33,7 +36,7 @@ class TaskController{
     return _taskBox?.get(key);
   }
 
-  List<Task> getCompletedTasks() {
+  List<Task?> getCompletedTasks() {
     return _taskBox?.values.where((task) => task.isCompleted).toList() ?? [];
   }
 }
