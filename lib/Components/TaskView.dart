@@ -330,7 +330,7 @@ class _NewTaskState extends ConsumerState<NewTask>{
                             title: _controllerTitle.text,
                             description: _controllerDesc.text,
                             deadline: getDateTime(),
-                            priority: _cnt.dropDownValue!.value,
+                            priority: _cnt.dropDownValue?.value ?? 3,
                             tags: tags,
                             filePath: []
                         );

@@ -7,9 +7,9 @@ import 'package:taskm/Models/tasks_provider.dart';
 class CompletedTaskTile extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final tasks = ref.watch(hiveData);
+    final tasks = ref.watch(CompletedTasksDataProvider);
     return ListView.builder(
-      itemCount: tasks!.length,
+      itemCount: tasks.length,
       itemBuilder: (context, index) {
         final task = tasks[index];
         return ListTile(

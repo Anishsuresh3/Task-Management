@@ -5,16 +5,13 @@ import 'package:taskm/Models/task_controler.dart';
 class TaskHive extends StateNotifier<List<Task?>?>{
   TaskHive(this.ref) : super(null){
     repo = ref.read(taskControllerProvider);
+    getTasks();
   }
   late TaskController repo;
   final StateNotifierProviderRef ref;
 
   void getTasks(){
     state = repo.getTasks();
-  }
-
-  void getCompletedTasks(){
-    state = repo.getCompletedTasks();
   }
 
   void addTask(Task task) {
@@ -28,5 +25,4 @@ class TaskHive extends StateNotifier<List<Task?>?>{
   void updateTodo(dynamic key, Task task) {
     state = repo.updateTask(key, task);
   }
-
 }

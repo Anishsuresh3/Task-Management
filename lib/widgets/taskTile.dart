@@ -7,18 +7,18 @@ import 'package:taskm/Models/tasks_provider.dart';
 class TaskTile extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final tasks = ref.watch(hiveData);
+    final tasks = ref.watch(TasksDataProvider);
     return ListView.builder(
-      itemCount: tasks!=null?tasks.length:0,
+      itemCount: tasks.length,
       itemBuilder: (context, index) {
-        final task = tasks![index];
-        if(task!=null){
-          return ListTile(
-            title: Text(task!.title),
-            subtitle: Text(task.description.toString()),
-          );
+        if(tasks.isNotEmpty){
+          final task = tasks[index];
+            return ListTile(
+              title: Text(task!.title),
+              subtitle: Text(task.description.toString()),
+            );
+          }
         }
-      },
     );
   }
 }
