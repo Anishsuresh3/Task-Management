@@ -18,4 +18,14 @@ final CompletedTasksDataProvider = Provider<List<Task?>>((ref) {
   return TaskData ?? [];
 });
 
+final getNumberOfTasks = Provider<List<double>>((ref) {
+  final Tasks = ref.watch(TasksDataProvider).length;
+  final CompletedTasks = ref.watch(CompletedTasksDataProvider).length;
+  List<double> noTasks = [];
+  noTasks.add(Tasks.toDouble());
+  noTasks.add(CompletedTasks.toDouble());
+  noTasks.add((CompletedTasks/(Tasks+CompletedTasks) * 100));
+  return noTasks;
+});
+
 final hiveData = StateNotifierProvider<TaskHive, List<Task?>?>((ref) => TaskHive(ref));

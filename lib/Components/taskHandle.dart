@@ -1,19 +1,23 @@
 import 'package:contained_tab_bar_view/contained_tab_bar_view.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hive/hive.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:taskm/widgets/Statistics.dart';
 import 'package:taskm/widgets/completedTaskTile.dart';
 import 'package:taskm/widgets/taskTile.dart';
 
 import '../Models/data/task.dart';
+import '../Models/tasks_provider.dart';
 
-class TaskHandler extends StatefulWidget {
+class TaskHandler extends StatefulHookConsumerWidget {
   const TaskHandler({Key? key}) : super(key: key);
 
   @override
-  State<TaskHandler> createState() => _TaskHandlerState();
+  ConsumerState<TaskHandler> createState() => _TaskHandlerState();
 }
 
-class _TaskHandlerState extends State<TaskHandler> with TickerProviderStateMixin{
+class _TaskHandlerState extends ConsumerState<TaskHandler> with TickerProviderStateMixin{
 
   late final TabController _tabController;
 
@@ -25,19 +29,33 @@ class _TaskHandlerState extends State<TaskHandler> with TickerProviderStateMixin
 
   @override
   Widget build(BuildContext context) {
+    final noTasks = ref.watch(getNumberOfTasks);
+    print(noTasks.toString());
     return Scaffold(
       appBar: AppBar(
-        bottom: TabBar(
-          controller: _tabController,
-          overlayColor: MaterialStateProperty.all<Color>(Colors.transparent),
-          tabs: const <Widget>[
-            Tab(
-              text: 'Task',
-            ),
-            Tab(
-              text: 'Completed',
-            ),
-          ],
+        bottom: PreferredSize(
+          preferredSize: Size(330,120),
+          child: Column(
+            children: [
+              Statistics(
+                  createdTasks: noTasks[0],
+                  completedTasks: noTasks[1],
+                  precent: noTasks[2]
+              ),
+              TabBar(
+                controller: _tabController,
+                overlayColor: MaterialStateProperty.all<Color>(Colors.transparent),
+                tabs: const <Widget>[
+                  Tab(
+                    text: 'Task',
+                  ),
+                  Tab(
+                    text: 'Completed',
+                  ),
+                ],
+              ),
+            ],
+          ),
         ),
       ),
       body: TabBarView(
