@@ -6,7 +6,7 @@ import 'package:iconsax/iconsax.dart';
 import 'package:simple_chips_input/select_chips_input.dart';
 import 'package:simple_chips_input/simple_chips_input.dart';
 import 'package:taskm/Models/task_controler.dart';
-import 'package:taskm/Models/tasks_provider.dart';
+import 'package:taskm/Models/provider/tasks_provider.dart';
 import 'package:toast/toast.dart';
 import '../Models/data/task.dart';
 import '../ScreenComponent/ScreenSize.dart';

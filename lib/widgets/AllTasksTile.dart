@@ -4,19 +4,20 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:taskm/Components/TaskDetails.dart';
 import 'package:taskm/Models/provider/tasks_provider.dart';
-class TaskTile extends StatefulHookConsumerWidget {
-  const TaskTile({Key? key}) : super(key: key);
+class AllTaskTile extends StatefulHookConsumerWidget {
+  const AllTaskTile({Key? key}) : super(key: key);
 
   @override
-  ConsumerState<TaskTile> createState() => _TaskTileState();
+  ConsumerState<AllTaskTile> createState() => _AllTaskTile();
 }
 
-class _TaskTileState extends ConsumerState<TaskTile> {
+class _AllTaskTile extends ConsumerState<AllTaskTile> {
   bool _isLongPressed = false;
   int indexTile = -1;
   @override
   Widget build(BuildContext context) {
-    final tasks = ref.watch(TasksDataProvider);
+    final tasks = ref.watch(sortTasks);
+    final sort = ref.watch(sortProvider);
     return ListView.builder(
         itemCount: tasks.length,
         itemBuilder: (context, index) {

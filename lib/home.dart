@@ -16,8 +16,8 @@ class _HomePageState extends State<HomePage> {
 
   final pages = const [
     TaskHandler(),
-    Calendar(),
-    AllTasks()
+    AllTasks(),
+    Calendar()
   ];
 
   int tapIndex=0;

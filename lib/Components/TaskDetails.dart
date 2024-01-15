@@ -4,7 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:taskm/Models/task_controler.dart';
-import 'package:taskm/Models/tasks_provider.dart';
+import 'package:taskm/Models/provider/tasks_provider.dart';
 import 'package:toast/toast.dart';
 
 import '../Models/data/task.dart';

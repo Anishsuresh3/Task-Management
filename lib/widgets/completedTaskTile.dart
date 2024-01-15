@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hive/hive.dart';
 import 'package:taskm/Models/task_controler.dart';
-import 'package:taskm/Models/tasks_provider.dart';
+import 'package:taskm/Models/provider/tasks_provider.dart';
 
 class CompletedTaskTile extends ConsumerWidget {
   @override

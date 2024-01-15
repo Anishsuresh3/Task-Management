@@ -4,7 +4,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:taskm/widgets/Statistics.dart';
 import 'package:taskm/widgets/completedTaskTile.dart';
 import 'package:taskm/widgets/taskTile.dart';
-import '../Models/tasks_provider.dart';
+import '../Models/provider/tasks_provider.dart';
 
 class TaskHandler extends StatefulHookConsumerWidget {
   const TaskHandler({Key? key}) : super(key: key);
