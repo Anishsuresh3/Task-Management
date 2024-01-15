@@ -12,9 +12,16 @@ class CompletedTaskTile extends ConsumerWidget {
       itemCount: tasks.length,
       itemBuilder: (context, index) {
         final task = tasks[index];
-        return ListTile(
-          title: Text(task!.title),
-          subtitle: Text(task.description.toString()),
+        return Card(
+          color: Color(0xFF7EF889),
+          margin: EdgeInsets.all(5),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10.0), // Border radius
+          ),
+          child: ListTile(
+            title: Text(task!.title),
+            subtitle: Text(task.description.toString()),
+          ),
         );
       },
     );

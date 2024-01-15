@@ -1,13 +1,9 @@
-import 'package:contained_tab_bar_view/contained_tab_bar_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:hive/hive.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:taskm/widgets/Statistics.dart';
 import 'package:taskm/widgets/completedTaskTile.dart';
 import 'package:taskm/widgets/taskTile.dart';
-
-import '../Models/data/task.dart';
 import '../Models/tasks_provider.dart';
 
 class TaskHandler extends StatefulHookConsumerWidget {
@@ -30,7 +26,6 @@ class _TaskHandlerState extends ConsumerState<TaskHandler> with TickerProviderSt
   @override
   Widget build(BuildContext context) {
     final noTasks = ref.watch(getNumberOfTasks);
-    print(noTasks.toString());
     return Scaffold(
       appBar: AppBar(
         bottom: PreferredSize(

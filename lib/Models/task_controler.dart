@@ -15,7 +15,7 @@ class TaskController{
 
   List<Task?> addTask(Task task)  {
     _taskBox?.add(task);
-    return _taskBox?.values.where((task) => task.isCompleted!=true).toList() ?? [];
+    return _taskBox?.values.toList() ?? [];
   }
 
   List<Task?> updateTask(dynamic key,Task value)  {

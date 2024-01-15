@@ -1,3 +1,4 @@
+import 'package:dropdown_textfield/dropdown_textfield.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -22,14 +23,19 @@ class _TaskDetailsState extends ConsumerState<TaskDetails> {
   final id;
   late Task? task;
   bool _isEditable = false;
+  DateTime _selectedDate = DateTime.now();
+  late String time;
   TextEditingController _controllerDesc = TextEditingController();
-
+  TextEditingController _controllerDeadLine = TextEditingController();
+   TextEditingController _controllerPri = TextEditingController();
    @override
   Widget build(BuildContext context) {
      SizeConfig().init(context);
      ToastContext().init(context);
     task = ref.watch(taskControllerProvider).getParticularTask(id);
     _controllerDesc.text = task!.description.toString();
+     _controllerDeadLine.text = task!.deadline.toString();
+     _controllerPri.text = task!.priority.toString();
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -43,6 +49,24 @@ class _TaskDetailsState extends ConsumerState<TaskDetails> {
           },
         ),
         actions: [
+          _isEditable?
+          ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Color(0xFFECE4FD),
+                shadowColor: Colors.black
+              ),
+              onPressed: (){
+                setState(() {
+                  _isEditable = false;
+                });
+              },
+              child: const Text(
+                'Save',
+                style: TextStyle(
+                  fontSize: 12
+                ),
+              )
+          ):
           IconButton(
               onPressed: (){
                 setState(() {
@@ -75,25 +99,89 @@ class _TaskDetailsState extends ConsumerState<TaskDetails> {
           SizedBox(
             height: getProportionateScreenHeight(20.0),
           ),
-          Container(
-            color: _isEditable?Colors.deepPurple[50]:Colors.white30,
-            child: TextField(
-              controller: _controllerDesc,
-              enabled: _isEditable,
-              decoration: InputDecoration(
-                labelText: 'Description',
-                border: OutlineInputBorder(),
-                fillColor: _isEditable?Colors.black26:Colors.deepPurple[50],
-              ),
+          TextField(
+            controller: _controllerDesc,
+            enabled: _isEditable,
+            decoration: InputDecoration(
+              labelText: 'Description',
+              labelStyle: TextStyle(color: Colors.deepPurple[400]),
+              border: OutlineInputBorder(),
             ),
+            style: const TextStyle(color: Colors.black),
           ),
           SizedBox(
             height: getProportionateScreenHeight(20.0),
           ),
+          TextFormField(
+            controller: _controllerDeadLine,
+            enabled: _isEditable,
+            decoration: InputDecoration(
+              labelText: 'Deadline',
+              labelStyle: TextStyle(color: Colors.deepPurple[400]),
+              fillColor: Colors.deepPurple[50],
+              border: OutlineInputBorder(),
+              suffixIcon: IconButton(
+                icon: const Icon(Iconsax.calendar),
+                onPressed: () {
+                  _getDateFromUser();
+                },
+              ),
+            ),
+            style: const TextStyle(color: Colors.black),
+          ),
+          SizedBox(
+            height: getProportionateScreenHeight(20.0),
+          ),
+          TextFormField(
+            controller: _controllerPri,
+            enabled: _isEditable,
+            decoration: InputDecoration(
+              labelText: 'Priority',
+              labelStyle: TextStyle(color: Colors.deepPurple[400]),
+              fillColor: Colors.deepPurple[50],
+              border: OutlineInputBorder(),
+              suffixIcon: IconButton(
+                icon: const Icon(Icons.arrow_drop_down_sharp),
+                onPressed: () {
 
+                },
+              ),
+            ),
+            style: const TextStyle(color: Colors.black),
+          ),
         ],
       ),
     );
   }
+   _getDateFromUser() async {
+     final DateTime? _pickedDate = await showDatePicker(
+         context: context,
+         initialDate: _selectedDate,
+         initialDatePickerMode: DatePickerMode.day,
+         firstDate: DateTime(2015),
+         lastDate: DateTime(2101));
+     if (_pickedDate != null) {
+       setState(() {
+         _controllerDeadLine.text = _pickedDate.toString().substring(0,11);
+       });
+       _getTimeFromUser();
+     }
+   }
+   _getTimeFromUser() async {
+     var _pickedTime = await _showTimePicker();
+     if(_pickedTime != null){
+       setState(() {
+         _controllerDeadLine.text += _pickedTime.format(context).toString();
+         time = _pickedTime.toString().substring(10,15);
+       });
+     }
+   }
+   _showTimePicker() async {
+     return showTimePicker(
+       initialTime: TimeOfDay(hour: 8, minute: 30),
+       initialEntryMode: TimePickerEntryMode.input,
+       context: context,
+     );
+   }
 }
 
