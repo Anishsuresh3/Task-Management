@@ -1,6 +1,8 @@
+import 'package:alarm/alarm.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hive_flutter/adapters.dart';
+import 'package:omni_datetime_picker/omni_datetime_picker.dart';
 import 'package:taskm/home.dart';
 
 import 'Models/data/task.dart';
@@ -10,6 +12,7 @@ void main() async {
   await Hive.initFlutter();
   Hive.registerAdapter(TaskAdapter());
   await Hive.openBox<Task>('tasksBox');
+  await Alarm.init();
   runApp(
     const ProviderScope(
       child: MyApp(),
@@ -34,60 +37,54 @@ class MyApp extends StatelessWidget {
 }
 
 
-class MyHomePage extends StatefulWidget {
-  @override
-  _MyHomePageState createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  // Define a TextEditingController
-  final TextEditingController _controller = TextEditingController();
-  bool _isEditable = false; // State variable to track if the text is editable
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Editable Text Fields'),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // Display TextField with initial content
-            TextField(
-              controller: _controller,
-              enabled: _isEditable, // Set enabled based on the editable state
-              decoration: InputDecoration(
-                labelText: 'Enter Text',
-                border: OutlineInputBorder(),
-              ),
-            ),
-            SizedBox(height: 16.0), // Add some spacing
-            // Display Button to toggle editable state
-            ElevatedButton(
-              onPressed: () {
-                setState(() {
-                  _isEditable = !_isEditable; // Toggle editable state
-                  if (!_isEditable) {
-                    // Clear focus to hide the keyboard when not editable
-                    FocusScope.of(context).unfocus();
-                  }
-                });
-              },
-              child: Text(_isEditable ? 'Save' : 'Edit'),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  @override
-  void dispose() {
-    // Dispose of the TextEditingController when the widget is disposed
-    _controller.dispose();
-    super.dispose();
-  }
-}
+// class MyHomePage extends StatefulWidget {
+//   @override
+//   _MyHomePageState createState() => _MyHomePageState();
+// }
+//
+// class _MyHomePageState extends State<MyHomePage> {
+//
+//   late DateTime dateTime;
+//
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//         appBar: AppBar(
+//           title: Text('Editable Text Fields'),
+//         ),
+//         body: Column(
+//           children: [
+//             Center(
+//               child: ElevatedButton(
+//                 onPressed: () async{
+//                   dateTime = (await showOmniDateTimePicker(context: context))!;
+//                   print(dateTime);
+//                 },
+//                 child: Text("SELECT"),
+//               ),
+//             ),
+//             Center(
+//               child: ElevatedButton(
+//                 onPressed: () async{
+//                   final alarmSettings = AlarmSettings(
+//                     id: 42,
+//                     dateTime: dateTime,
+//                     assetAudioPath: 'assets/audio/alarm.mp3',
+//                     loopAudio: false,
+//                     vibrate: true,
+//                     fadeDuration: 3.0,
+//                     notificationTitle: 'This is the title',
+//                     notificationBody: 'This is the body',
+//                     enableNotificationOnKill: true,
+//                   );
+//                   await Alarm.set(alarmSettings: alarmSettings);
+//                 },
+//                 child: Text("START"),
+//               ),
+//             ),
+//           ],
+//         )
+//     );
+//   }
+// }

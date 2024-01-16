@@ -4,22 +4,20 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:taskm/Components/TaskDetails.dart';
 import 'package:taskm/Models/provider/tasks_provider.dart';
-class AllTaskTile extends StatefulHookConsumerWidget {
-  const AllTaskTile({Key? key}) : super(key: key);
+class CalendarTasks extends StatefulHookConsumerWidget {
+  const CalendarTasks({Key? key}) : super(key: key);
 
   @override
-  ConsumerState<AllTaskTile> createState() => _AllTaskTile();
+  ConsumerState<CalendarTasks> createState() => _CalendarTasksTile();
 }
 
-class _AllTaskTile extends ConsumerState<AllTaskTile> {
+class _CalendarTasksTile extends ConsumerState<CalendarTasks> {
   bool _isLongPressed = false;
   int indexTile = -1;
   @override
   Widget build(BuildContext context) {
-    var tasks = ref.watch(sortTasks);
-    final sort = ref.watch(sortProvider);
-    final searchTasks = ref.watch(searchedTasks);
-    tasks = searchTasks;
+    final tasks = ref.watch(calendarTasks);
+    print("dead"+tasks.toString());
     return ListView.builder(
         itemCount: tasks.length,
         itemBuilder: (context, index) {
@@ -27,8 +25,9 @@ class _AllTaskTile extends ConsumerState<AllTaskTile> {
             final task = tasks[index];
             return Card(
               margin: EdgeInsets.all(5),
+              color: task!.isCompleted?Color(0xFF7EF889):null,
               shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10.0), // Border radius
+                borderRadius: BorderRadius.circular(10.0),
               ),
               child: ListTile(
                 title: Text(task!.title),

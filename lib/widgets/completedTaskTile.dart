@@ -1,12 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:hive/hive.dart';
-import 'package:taskm/Models/task_controler.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:iconsax/iconsax.dart';
 import 'package:taskm/Models/provider/tasks_provider.dart';
 
-class CompletedTaskTile extends ConsumerWidget {
+class CompletedTaskTile extends StatefulHookConsumerWidget {
+  const CompletedTaskTile({Key? key}) : super(key: key);
+
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<CompletedTaskTile> createState() => _CompletedTaskTileState();
+}
+
+class _CompletedTaskTileState extends ConsumerState<CompletedTaskTile> {
+  bool _isPressed = false;
+  int indexTile = -1;
+  @override
+  Widget build(BuildContext context) {
     final tasks = ref.watch(CompletedTasksDataProvider);
     return ListView.builder(
       itemCount: tasks.length,
@@ -21,6 +30,22 @@ class CompletedTaskTile extends ConsumerWidget {
           child: ListTile(
             title: Text(task!.title),
             subtitle: Text(task.description.toString()),
+            trailing: _isPressed && indexTile==index ?
+            IconButton(
+              onPressed: () {
+                ref.read(hiveData.notifier).removeTask(task.key);
+                setState(() {
+                  _isPressed = false;
+                });
+              },
+              icon: Icon(Iconsax.trash) ,
+            ) : null,
+            onTap: (){
+              setState(() {
+                _isPressed = true;
+                indexTile = index;
+              });
+            },
           ),
         );
       },

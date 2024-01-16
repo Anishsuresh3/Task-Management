@@ -103,6 +103,15 @@ final searchedTasks = Provider<List<Task?>>((ref) {
   return res.isEmpty?[]:res;
 });
 
+final calendarTasks = Provider<List<Task?>>((ref){
+  final hiveTasks = ref.watch(hiveData);
+  final calendar = ref.watch(calendarProvider);
+  return hiveTasks?.where((element) {
+    var deadline = element!.deadline.copyWith(year:calendar.year,month: calendar.month,day: calendar.day);
+    return element?.deadline==deadline;
+  }).toList() ?? [];
+});
+
 final hiveData = StateNotifierProvider<TaskHive, List<Task?>?>((ref) => TaskHive(ref));
 
 final filterProvider = StateProvider<Filters>((ref) => Filters.all);
@@ -110,3 +119,5 @@ final filterProvider = StateProvider<Filters>((ref) => Filters.all);
 final searchProvider = StateProvider<String>((ref) => '');
 
 final sortProvider = StateProvider<Sort>((ref) => Sort.all);
+
+final calendarProvider = StateProvider<DateTime>((ref) => DateTime.now());

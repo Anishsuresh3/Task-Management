@@ -29,7 +29,7 @@ class Task extends HiveObject{
   Task({
     required this.title,
     required this.description,
-    this.isCompleted = true,
+    this.isCompleted = false,
     required this.deadline,
     this.priority = 3,
     required this.tags,
