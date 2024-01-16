@@ -49,7 +49,7 @@ class _TaskTileState extends ConsumerState<TaskTile> {
                 onTap: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => TaskDetails(id: task.key,)),
+                    MaterialPageRoute(builder: (context) => TaskDetails(task: task,)),
                   );
                 },
               ),

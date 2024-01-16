@@ -37,54 +37,54 @@ class MyApp extends StatelessWidget {
 }
 
 
-// class MyHomePage extends StatefulWidget {
-//   @override
-//   _MyHomePageState createState() => _MyHomePageState();
-// }
-//
-// class _MyHomePageState extends State<MyHomePage> {
-//
-//   late DateTime dateTime;
-//
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//         appBar: AppBar(
-//           title: Text('Editable Text Fields'),
-//         ),
-//         body: Column(
-//           children: [
-//             Center(
-//               child: ElevatedButton(
-//                 onPressed: () async{
-//                   dateTime = (await showOmniDateTimePicker(context: context))!;
-//                   print(dateTime);
-//                 },
-//                 child: Text("SELECT"),
-//               ),
-//             ),
-//             Center(
-//               child: ElevatedButton(
-//                 onPressed: () async{
-//                   final alarmSettings = AlarmSettings(
-//                     id: 42,
-//                     dateTime: dateTime,
-//                     assetAudioPath: 'assets/audio/alarm.mp3',
-//                     loopAudio: false,
-//                     vibrate: true,
-//                     fadeDuration: 3.0,
-//                     notificationTitle: 'This is the title',
-//                     notificationBody: 'This is the body',
-//                     enableNotificationOnKill: true,
-//                   );
-//                   await Alarm.set(alarmSettings: alarmSettings);
-//                 },
-//                 child: Text("START"),
-//               ),
-//             ),
-//           ],
-//         )
-//     );
-//   }
-// }
+class MyHomePage extends StatefulWidget {
+  @override
+  _MyHomePageState createState() => _MyHomePageState();
+}
+
+class _MyHomePageState extends State<MyHomePage> {
+
+  late DateTime dateTime;
+
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+        appBar: AppBar(
+          title: Text('Editable Text Fields'),
+        ),
+        body: Column(
+          children: [
+            Center(
+              child: ElevatedButton(
+                onPressed: () async{
+                  dateTime = (await showOmniDateTimePicker(context: context))!;
+                  print(dateTime);
+                },
+                child: Text("SELECT"),
+              ),
+            ),
+            Center(
+              child: ElevatedButton(
+                onPressed: () async{
+                  final alarmSettings = AlarmSettings(
+                    id: 42,
+                    dateTime: dateTime,
+                    assetAudioPath: 'assets/audio/alarm.mp3',
+                    loopAudio: false,
+                    vibrate: true,
+                    fadeDuration: 3.0,
+                    notificationTitle: 'This is the title',
+                    notificationBody: 'This is the body',
+                    enableNotificationOnKill: true,
+                  );
+                  await Alarm.set(alarmSettings: alarmSettings);
+                },
+                child: Text("START"),
+              ),
+            ),
+          ],
+        )
+    );
+  }
+}
