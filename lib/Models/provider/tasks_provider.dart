@@ -30,14 +30,6 @@ final getNumberOfTasks = Provider<List<double>>((ref) {
   return noTasks;
 });
 
-// final getAllTasks = Provider<List<Task?>>((ref){
-//   final hiveTasks = ref.watch(hiveData);
-//   final filter = ref.watch(filterProvider);
-//   final sort = ref.watch(sortProvider);
-//
-//
-// });
-
 final fliteredTasks = Provider<List<Task?>>((ref)  {
   final hiveTasks = ref.watch(hiveData);
   final filter = ref.watch(filterProvider);
@@ -76,9 +68,6 @@ final sortTasks = Provider<List<Task?>>((ref)  {
   final filterTasks = ref.watch(fliteredTasks);
   final sort = ref.watch(sortProvider);
   final filterSortData = filterTasks.isEmpty?hiveTasks??[]:filterTasks;
-  filterSortData.toList().forEach((element) {
-    print(element?.title);
-  });
   switch (sort) {
       case Sort.DeadLine_By_Ascending:
         filterSortData.sort((a,b) => a!.deadline.compareTo(b!.deadline));
@@ -95,12 +84,29 @@ final sortTasks = Provider<List<Task?>>((ref)  {
       case Sort.all:
         return filterSortData.toList() ?? [];
   }
-  print("kkkkkkkk");
   return filterSortData;
+});
+
+final searchedTasks = Provider<List<Task?>>((ref) {
+  final hiveTasks = ref.watch(hiveData);
+  final filteredSortedList = ref.watch(sortTasks);
+  final query = ref.watch(searchProvider);
+  var res = filteredSortedList.isEmpty ? hiveTasks ?? []
+      :filteredSortedList
+      .where((task) => task!.title.toLowerCase().contains(query.toLowerCase()))
+      .toList();
+  if (res.isEmpty){
+    res = filteredSortedList
+        .where((task) => task!.tags!.contains(query.toLowerCase()))
+        .toList();
+  }
+  return res.isEmpty?[]:res;
 });
 
 final hiveData = StateNotifierProvider<TaskHive, List<Task?>?>((ref) => TaskHive(ref));
 
 final filterProvider = StateProvider<Filters>((ref) => Filters.all);
+
+final searchProvider = StateProvider<String>((ref) => '');
 
 final sortProvider = StateProvider<Sort>((ref) => Sort.all);

@@ -29,6 +29,9 @@ class _AllTasksState extends ConsumerState<AllTasks> {
           child: TextFormField(
             controller: _controllerSearch,
             keyboardType: TextInputType.text,
+            onChanged: (e) {
+              ref.read(searchProvider.notifier).state = e;
+            },
             decoration: InputDecoration(
               prefixIcon: const Icon(
                 Iconsax.search_normal_1,
@@ -49,7 +52,7 @@ class _AllTasksState extends ConsumerState<AllTasks> {
                   ),
                   )
                   : null,
-                  labelText: "Search Text",
+                  labelText: "Search Task",
                   border: InputBorder.none,
                   focusedBorder: InputBorder.none,
                   enabledBorder: InputBorder.none,
