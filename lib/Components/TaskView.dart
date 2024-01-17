@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:android_alarm_manager_plus/android_alarm_manager_plus.dart';
 import 'package:dropdown_textfield/dropdown_textfield.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
@@ -242,7 +243,7 @@ class _NewTaskState extends ConsumerState<NewTask>{
                             onPressed: () async {
                               var dateTimeData = (await showOmniDateTimePicker(
                                   context: context))!;
-                              if (dateTime != null) {
+                              if (dateTimeData != null) {
                               String formattedDateTime = DateFormat('yyyy-MM-dd h:mm a')
                                   .format(dateTimeData);
                               setState(() {
@@ -390,7 +391,7 @@ class _NewTaskState extends ConsumerState<NewTask>{
                         backgroundColor: Color(0xFFD1C4E9),
                         minimumSize: Size(280, 50),
                       ),
-                      onPressed: () {
+                      onPressed: () async {
                         if(validateInput()){
                           final task = Task(
                               title: _controllerTitle.text,

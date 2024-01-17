@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:android_alarm_manager_plus/android_alarm_manager_plus.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -7,10 +8,12 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:material_tag_editor/tag_editor.dart';
 import 'package:omni_datetime_picker/omni_datetime_picker.dart';
+import 'package:open_file/open_file.dart';
 import 'package:path/path.dart';
 import 'package:taskm/Models/provider/tasks_provider.dart';
 import 'package:toast/toast.dart';
 import 'package:intl/intl.dart';
+import '../Models/task_controler.dart';
 import '../ScreenComponent/ScreenSize.dart';
 class TaskDetails extends StatefulHookConsumerWidget {
   const TaskDetails({Key? key,required this.task}) : super(key: key);
@@ -41,6 +44,10 @@ class _TaskDetailsState extends ConsumerState<TaskDetails> {
     _controllerDeadLine.text = DateFormat('yyyy-MM-dd h:mm a')
         .format(task!.deadline);
     _controllerPri.text = priority[task!.priority];
+  }
+
+  void _openFile(String? path) {
+    OpenFile.open(path);
   }
 
   @override
@@ -111,6 +118,14 @@ class _TaskDetailsState extends ConsumerState<TaskDetails> {
                         isCompleted: true,
                         deadline: task!.deadline,
                         priority: task!.priority));
+                Toast.show("Task Completed!!!",
+                    duration: Toast.lengthLong,
+                    backgroundColor: const Color(0xFFEDE7F6),
+                    backgroundRadius: 2,
+                    textStyle: const TextStyle(
+                        color: Colors.black
+                    ),
+                    gravity:  Toast.bottom);
                 Navigator.pop(context);
               },
               icon: Icon(Iconsax.tick_square)
@@ -156,13 +171,14 @@ class _TaskDetailsState extends ConsumerState<TaskDetails> {
                   onPressed: () async {
                     var dateTimeData = (await showOmniDateTimePicker(
                         context: context))!;
-                    if (dateTime != null) {
+                    if (dateTimeData != null) {
+                      AndroidAlarmManager.cancel(task.key);
                       String formattedDateTime = DateFormat('yyyy-MM-dd h:mm a')
                           .format(dateTimeData);
                       setState(() {
                         dateTime = dateTimeData;
-                        _controllerDeadLine.text = formattedDateTime;
                       });
+                      _controllerDeadLine.text = formattedDateTime;
                     }
                   },
                 ),
@@ -302,7 +318,9 @@ class _TaskDetailsState extends ConsumerState<TaskDetails> {
                         icon: Icon(Iconsax.trash),
                       ) : null,
                       onTap: () {
-                        setState(() {});
+                        if(_isEditable){
+                          _openFile(file);
+                        }
                       },
                     ),
                   );

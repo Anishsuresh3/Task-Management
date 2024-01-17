@@ -112,9 +112,7 @@ class _AllTasksState extends ConsumerState<AllTasks> {
           ),
         ],
       ),
-      body: Expanded(
-          child: AllTaskTile()
-      )
+      body: AllTaskTile()
     );
   }
 }

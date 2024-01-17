@@ -1,3 +1,4 @@
+import 'package:android_alarm_manager_plus/android_alarm_manager_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -35,6 +36,7 @@ class _CalendarTasksTile extends ConsumerState<CalendarTasks> {
                 trailing: _isLongPressed && indexTile==index ?
                 IconButton(
                   onPressed: () {
+                    AndroidAlarmManager.cancel(task.key);
                     ref.read(hiveData.notifier).removeTask(task.key);
                     setState(() {
                       _isLongPressed = false;

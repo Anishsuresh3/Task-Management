@@ -58,6 +58,7 @@ class _CalendarState extends ConsumerState<Calendar> {
             },
           ),
           Expanded(
+              flex: 1,
               child: CalendarTasks()
           )
         ],

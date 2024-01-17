@@ -1,18 +1,50 @@
-import 'package:alarm/alarm.dart';
+import 'dart:isolate';
+import 'dart:math';
+import 'dart:ui';
+
+// import 'package:alarm/alarm.dart';
+import 'package:android_alarm_manager_plus/android_alarm_manager_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:omni_datetime_picker/omni_datetime_picker.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:taskm/home.dart';
-
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'Models/data/task.dart';
+import 'package:timezone/data/latest.dart' as tzdata;
+import 'package:timezone/timezone.dart' as tz;
+
+const String isolateName = 'isolate';
+
+/// A port used to communicate from a background isolate to the UI isolate.
+ReceivePort port = ReceivePort();
+
+Future<void> requestNotificationPermission() async {
+  var status = await Permission.notification.status;
+  var storageStatus = await Permission.storage.status;
+
+  if (status.isDenied) {
+    await Permission.notification.request();
+  }
+  if(storageStatus.isDenied){
+    await Permission.storage.request();
+  }
+}
+
+
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Hive.initFlutter();
   Hive.registerAdapter(TaskAdapter());
   await Hive.openBox<Task>('tasksBox');
-  await Alarm.init();
+  IsolateNameServer.registerPortWithName(
+    port.sendPort,
+    isolateName,
+  );
+  requestNotificationPermission();
+  await AndroidAlarmManager.initialize();
   runApp(
     const ProviderScope(
       child: MyApp(),
@@ -20,8 +52,43 @@ void main() async {
   );
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({super.key});
+
+  static FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+  FlutterLocalNotificationsPlugin();
+
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  Future<void> init() async {
+    // Initialize native android notification
+    const AndroidInitializationSettings initializationSettingsAndroid =
+    AndroidInitializationSettings('@mipmap/ic_launcher');
+
+    // Initialize native Ios Notifications
+    const DarwinInitializationSettings initializationSettingsIOS =
+    DarwinInitializationSettings();
+
+    const InitializationSettings initializationSettings =
+    InitializationSettings(
+      android: initializationSettingsAndroid,
+      iOS: initializationSettingsIOS,
+    );
+
+    await MyApp.flutterLocalNotificationsPlugin.initialize(
+      initializationSettings,
+    );
+  }
+
+  @override
+  void initState(){
+    super.initState();
+    init();
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -37,54 +104,3 @@ class MyApp extends StatelessWidget {
 }
 
 
-class MyHomePage extends StatefulWidget {
-  @override
-  _MyHomePageState createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-
-  late DateTime dateTime;
-
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(
-          title: Text('Editable Text Fields'),
-        ),
-        body: Column(
-          children: [
-            Center(
-              child: ElevatedButton(
-                onPressed: () async{
-                  dateTime = (await showOmniDateTimePicker(context: context))!;
-                  print(dateTime);
-                },
-                child: Text("SELECT"),
-              ),
-            ),
-            Center(
-              child: ElevatedButton(
-                onPressed: () async{
-                  final alarmSettings = AlarmSettings(
-                    id: 42,
-                    dateTime: dateTime,
-                    assetAudioPath: 'assets/audio/alarm.mp3',
-                    loopAudio: false,
-                    vibrate: true,
-                    fadeDuration: 3.0,
-                    notificationTitle: 'This is the title',
-                    notificationBody: 'This is the body',
-                    enableNotificationOnKill: true,
-                  );
-                  await Alarm.set(alarmSettings: alarmSettings);
-                },
-                child: Text("START"),
-              ),
-            ),
-          ],
-        )
-    );
-  }
-}

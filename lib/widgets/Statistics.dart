@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:sleek_circular_slider/sleek_circular_slider.dart';
 class Statistics extends StatelessWidget {
   const Statistics({
@@ -43,7 +44,8 @@ class Statistics extends StatelessWidget {
                     ),
                   ),
                   Text(
-                   DateTime.now().toString(),
+                      DateFormat('yyyy-MM-dd h:mm a')
+                      .format(DateTime.now()),
                     style: TextStyle(fontSize: 10),
                     overflow: TextOverflow.ellipsis,
                   ),
