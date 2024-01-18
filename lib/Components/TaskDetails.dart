@@ -112,6 +112,7 @@ class _TaskDetailsState extends ConsumerState<TaskDetails> {
           ),
           IconButton(
               onPressed: () {
+                AndroidAlarmManager.cancel(key);
                 ref.read(hiveData.notifier).updateTodo(
                     key,
                     task!.copyWith(
@@ -163,6 +164,7 @@ class _TaskDetailsState extends ConsumerState<TaskDetails> {
             TextFormField(
               controller: _controllerDeadLine,
               enabled: _isEditable,
+              readOnly: true,
               decoration: InputDecoration(
                 labelText: 'Deadline',
                 labelStyle: TextStyle(color: Colors.deepPurple[400]),

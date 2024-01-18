@@ -60,7 +60,7 @@ class Statistics extends StatelessWidget {
                 size: 70,
                 infoProperties: InfoProperties(
                   modifier: (percentage) {
-                    return createdTasks != 0 ? '${precent.toStringAsFixed(0)}%' : '0%';
+                    return '${precent.toStringAsFixed(0)}%';
                   },
                   mainLabelStyle:
                   TextStyle(fontSize: 18),

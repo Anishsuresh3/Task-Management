@@ -224,6 +224,7 @@ class _NewTaskState extends ConsumerState<NewTask>{
                       padding: EdgeInsets.only(left: getProportionateScreenWidth(30.0)),
                       child: TextFormField(
                         controller: _controllerDate,
+                        readOnly: true,
                         decoration: InputDecoration(
                           labelText: !_controllerDate.text.isNotEmpty?'Select Date and Time':'Date and Time',
                           labelStyle: TextStyle(color: Colors.deepPurple[400]),
