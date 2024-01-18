@@ -84,15 +84,15 @@ final sortTasks = Provider<List<Task?>>((ref)  {
       case Sort.all:
         return filterSortData.toList() ?? [];
   }
+  print("sending data");
   return filterSortData;
 });
 
 final searchedTasks = Provider<List<Task?>>((ref) {
-  final hiveTasks = ref.watch(hiveData);
   final filteredSortedList = ref.watch(sortTasks);
   final query = ref.watch(searchProvider);
-  var res = filteredSortedList.isEmpty ? hiveTasks ?? []
-      :filteredSortedList
+  final sort = ref.watch(sortProvider);
+  var res = filteredSortedList
       .where((task) => task!.title.toLowerCase().contains(query.toLowerCase()))
       .toList();
   if (res.isEmpty){
@@ -100,7 +100,7 @@ final searchedTasks = Provider<List<Task?>>((ref) {
         .where((task) => task!.tags!.contains(query.toLowerCase()))
         .toList();
   }
-  return res.isEmpty?[]:res;
+  return res;
 });
 
 final calendarTasks = Provider<List<Task?>>((ref){

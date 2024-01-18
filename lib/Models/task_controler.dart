@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:android_alarm_manager_plus/android_alarm_manager_plus.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -28,7 +30,7 @@ class TaskController{
         priority: Priority.high,
         ticker: 'ticker');
 
-    int notification_id = 1;
+    int notification_id = Random().nextInt(1000);
     const NotificationDetails notificationDetails =
     NotificationDetails(android: androidNotificationDetails);
 
@@ -38,7 +40,10 @@ class TaskController{
 
   List<Task?> addTask(Task task) {
     _taskBox?.add(task);
-    notify(task.title,task.deadline,task.key);
+    final deadline = task.deadline.hour-DateTime.now().hour>=1?
+    task.deadline.copyWith(hour: task.deadline.hour-1):task.deadline;
+    print(deadline);
+    notify(task.title,deadline,task.key);
     return _taskBox?.values.toList() ?? [];
   }
 
@@ -56,7 +61,10 @@ class TaskController{
   List<Task?> updateTask(dynamic key,Task value)  {
     _taskBox?.put(key, value);
     if(!value.isCompleted){
-      notify(value.title,value.deadline,value.key);
+      final deadline = value.deadline.hour-DateTime.now().hour>=1?
+      value.deadline.copyWith(hour: value.deadline.hour-1):value.deadline;
+      print(deadline);
+      notify(value.title,deadline,value.key);
     }
     return _taskBox?.values.toList() ?? [];
   }

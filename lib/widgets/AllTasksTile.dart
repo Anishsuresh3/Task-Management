@@ -19,8 +19,13 @@ class _AllTaskTile extends ConsumerState<AllTaskTile> {
   Widget build(BuildContext context) {
     var tasks = ref.watch(sortTasks);
     final sort = ref.watch(sortProvider);
-    final searchTasks = ref.watch(searchedTasks);
+    var searchTasks = ref.watch(searchedTasks);
+    final see = ref.watch(searchProvider);
     tasks = searchTasks;
+    searchTasks.forEach((element) {
+      print(element!.title);
+    });
+    print("ljjjjjjjjjj");
     return ListView.builder(
         itemCount: tasks.length,
         itemBuilder: (context, index) {

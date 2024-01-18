@@ -28,6 +28,7 @@ class _TaskDetailsState extends ConsumerState<TaskDetails> {
   _TaskDetailsState({required this.task});
 
   final task;
+  late final key;
   bool _isEditable = false;
   DateTime _selectedDate = DateTime.now();
   late String time;
@@ -44,6 +45,7 @@ class _TaskDetailsState extends ConsumerState<TaskDetails> {
     _controllerDeadLine.text = DateFormat('yyyy-MM-dd h:mm a')
         .format(task!.deadline);
     _controllerPri.text = priority[task!.priority];
+    key = task.key;
   }
 
   void _openFile(String? path) {
@@ -75,7 +77,7 @@ class _TaskDetailsState extends ConsumerState<TaskDetails> {
               ),
               onPressed: () {
                 ref.read(hiveData.notifier).updateTodo(
-                  task.key,
+                  key,
                     task.copyWith(
                     title: task!.title,
                     description: _controllerDesc.text,
@@ -111,7 +113,7 @@ class _TaskDetailsState extends ConsumerState<TaskDetails> {
           IconButton(
               onPressed: () {
                 ref.read(hiveData.notifier).updateTodo(
-                    task.key,
+                    key,
                     task!.copyWith(
                         title: task!.title,
                         description: task!.description,
@@ -172,7 +174,7 @@ class _TaskDetailsState extends ConsumerState<TaskDetails> {
                     var dateTimeData = (await showOmniDateTimePicker(
                         context: context))!;
                     if (dateTimeData != null) {
-                      AndroidAlarmManager.cancel(task.key);
+                      AndroidAlarmManager.cancel(key);
                       String formattedDateTime = DateFormat('yyyy-MM-dd h:mm a')
                           .format(dateTimeData);
                       setState(() {

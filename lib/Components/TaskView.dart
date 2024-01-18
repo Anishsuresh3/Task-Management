@@ -392,7 +392,7 @@ class _NewTaskState extends ConsumerState<NewTask>{
                         minimumSize: Size(280, 50),
                       ),
                       onPressed: () async {
-                        if(validateInput()){
+                        if(validateInput() && DateTime.now().compareTo(dateTime)==-1){
                           final task = Task(
                               title: _controllerTitle.text,
                               description: _controllerDesc.text,
