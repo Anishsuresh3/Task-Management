@@ -26,7 +26,8 @@ final getNumberOfTasks = Provider<List<double>>((ref) {
   List<double> noTasks = [];
   noTasks.add(Tasks.toDouble());
   noTasks.add(CompletedTasks.toDouble());
-  noTasks.add((CompletedTasks/(Tasks+CompletedTasks) * 100));
+  double per = (Tasks+CompletedTasks)!=0?(CompletedTasks/(Tasks+CompletedTasks) * 100):0;
+  noTasks.add(per);
   return noTasks;
 });
 

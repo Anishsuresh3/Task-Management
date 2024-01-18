@@ -76,22 +76,33 @@ class _TaskDetailsState extends ConsumerState<TaskDetails> {
                   shadowColor: Colors.black
               ),
               onPressed: () {
-                ref.read(hiveData.notifier).updateTodo(
-                  key,
-                    task.copyWith(
-                    title: task!.title,
-                    description: _controllerDesc.text,
-                    isCompleted: false,
-                    deadline: dateTime??task.deadline,
-                    filePath: task?.filePath,
-                    tags: task.tags,
-                    priority: priority.indexOf(_controllerPri.text),
-                  )
-                );
-                setState(() {
-                  _isEditable = false;
-                });
-              },
+                if(DateTime.now().compareTo(dateTime!)!=-1){
+                  Toast.show("Invalid Time",
+                      duration: Toast.lengthLong,
+                      backgroundColor: const Color(0xFFEDE7F6),
+                      backgroundRadius: 2,
+                      textStyle: const TextStyle(
+                          color: Colors.black
+                      ),
+                      gravity:  Toast.bottom);
+                }
+                else {
+                      ref.read(hiveData.notifier).updateTodo(
+                          key,
+                          task.copyWith(
+                            title: task!.title,
+                            description: _controllerDesc.text,
+                            isCompleted: false,
+                            deadline: dateTime ?? task.deadline,
+                            filePath: task?.filePath,
+                            tags: task.tags,
+                            priority: priority.indexOf(_controllerPri.text),
+                          ));
+                      setState(() {
+                        _isEditable = false;
+                      });
+                    }
+                  },
               child: const Text(
                 'Save',
                 style: TextStyle(

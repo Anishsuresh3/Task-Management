@@ -393,7 +393,17 @@ class _NewTaskState extends ConsumerState<NewTask>{
                         minimumSize: Size(280, 50),
                       ),
                       onPressed: () async {
-                        if(validateInput() && DateTime.now().compareTo(dateTime)==-1){
+                        if(DateTime.now().compareTo(dateTime)!=-1){
+                          Toast.show("Invalid Time",
+                              duration: Toast.lengthLong,
+                              backgroundColor: const Color(0xFFEDE7F6),
+                              backgroundRadius: 2,
+                              textStyle: const TextStyle(
+                                  color: Colors.black
+                              ),
+                              gravity:  Toast.bottom);
+                        }
+                        else if(validateInput()){
                           final task = Task(
                               title: _controllerTitle.text,
                               description: _controllerDesc.text,
